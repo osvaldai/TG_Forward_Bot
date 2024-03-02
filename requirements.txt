@@ -1,0 +1,4 @@
+requests
+schedule
+requests_oauthlib
+telethon

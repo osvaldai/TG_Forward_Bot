@@ -68,6 +68,28 @@ def is_similar_to_signal(message):
     return False  # Возвращаем False, если какая-то проверка не пройдена
 
 
+def is_similar_to_signal_TP(message):
+    lines = message.split('\n')
+
+    # Флаги для проверки каждого элемента
+    has_signal_id, has_coin, has_direction, has_targets, has_profit, = False, False, False, False, False,
+
+    for line in lines:
+        if re.search(r'📍SIGNAL\sID:\s#\d+📍', line):
+            has_signal_id = True
+        elif re.search(r'COIN:\s\$\w+/\w+', line):
+            has_coin = True
+        elif re.search(r'Direction:\s\w+📈?', line):
+            has_direction = True
+        elif re.search(r'Target\s\d+:', line):
+            has_targets = True
+        elif re.search(r'🔥[\d\.]+% Profit', line):
+            has_profit = True
+
+    # Проверяем, что все элементы присутствуют
+    return all([has_signal_id, has_coin, has_direction, has_targets, has_profit, ])
+
+
 @client_tg.on(events.NewMessage(chats=chat))
 async def normal_handler_1(event):
     txt = str(event.message.to_dict()['message']).replace('- Binance Killers®', '').replace(
@@ -83,6 +105,12 @@ async def normal_handler_1(event):
         #     print('Forwarded message with media')
         # else:
         # Если медиа нет, просто пересылаем текст
+        await client_tg.send_message(
+            entity=destination_chat,
+            message=txt
+        )
+        print('Forwarded text message')
+    elif is_similar_to_signal_TP(txt):
         await client_tg.send_message(
             entity=destination_chat,
             message=txt

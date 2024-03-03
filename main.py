@@ -9,7 +9,7 @@ api_hash = '6a3dc4e051465fc0266835b6f4dd6777'
 client_tg = TelegramClient('session_name_forward.session', api_id, api_hash)
 
 chat = -1001322515232  # Например, -1001322515232
-destination_chat = os.environ.get("chat_id_target")  # ID целевого чата, куда будет пересылаться сообщение
+destination_chat = -1002057661201  # ID целевого чата, куда будет пересылаться сообщение
 
 
 def extract_trading_info(message):

@@ -90,7 +90,33 @@ def is_similar_to_signal_TP(message):
     return all([has_signal_id, has_coin, has_direction, has_targets, has_profit, ])
 
 
-@client_tg.on(events.NewMessage(chats=[-1002143151446, -1001736278884, -1001525644349]))
+@client_tg.on(events.NewMessage(chats=-1001736278884))
+async def normal_handler_1(event):
+    txt = str(event.message.to_dict()['message']).replace('- Binance Killers®', '').replace(
+        'This message cannot be forwarded or replicated', '')
+    # message = event.message
+
+    await client_tg.send_message(
+        entity=destination_chat,
+        message=txt
+    )
+    print('Forwarded text message')
+
+
+@client_tg.on(events.NewMessage(chats=-1001525644349))
+async def normal_handler_1(event):
+    txt = str(event.message.to_dict()['message']).replace('- Binance Killers®', '').replace(
+        'This message cannot be forwarded or replicated', '')
+    # message = event.message
+
+    await client_tg.send_message(
+        entity=destination_chat,
+        message=txt
+    )
+    print('Forwarded text message')
+
+
+@client_tg.on(events.NewMessage(chats=-1002143151446))
 async def normal_handler_1(event):
     txt = str(event.message.to_dict()['message']).replace('- Binance Killers®', '').replace(
         'This message cannot be forwarded or replicated', '')

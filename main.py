@@ -3,6 +3,9 @@ import re
 
 from telethon import TelegramClient, events
 
+from trade_info_extractor import parse_trade_message, is_trade_message, parse_trade_message_49, \
+    is_valid_trade_message_49, parse_trading_signal, is_valid_trading_summary
+
 api_id = 1137549
 api_hash = '6a3dc4e051465fc0266835b6f4dd6777'
 
@@ -92,40 +95,43 @@ def is_similar_to_signal_TP(message):
 
 @client_tg.on(events.NewMessage(chats=-1001736278884))
 async def normal_handler_1(event):
+    """Bitcoin premium Channel 1001736278884"""
     txt = str(event.message.to_dict()['message']).replace('- Binance Killers®', '').replace(
         'This message cannot be forwarded or replicated', '')
-    # message = event.message
-
-    await client_tg.send_message(
-        entity=destination_chat,
-        message=txt
-    )
+    message = event.message
+    if parse_trade_message(message)['trade_side'] is not None or is_trade_message(message):
+        await client_tg.send_message(
+            entity=destination_chat,
+            message=txt
+        )
     print('Forwarded text message')
 
 
 @client_tg.on(events.NewMessage(chats=-1001525644349))
 async def normal_handler_1(event):
+    """rus fed premium channel 1001525644349"""
     txt = str(event.message.to_dict()['message']).replace('- Binance Killers®', '').replace(
-        'This message cannot be forwarded or replicated', '')
-    # message = event.message
-
-    await client_tg.send_message(
-        entity=destination_chat,
-        message=txt
-    )
-    print('Forwarded text message')
+        'This message cannot be forwarded or replicated', '').replace('Fed. Russian Insiders®', '')
+    message = event.message
+    if parse_trade_message_49(message) or is_valid_trade_message_49(message):
+        await client_tg.send_message(
+            entity=destination_chat,
+            message=txt
+        )
+        print('Forwarded text message')
 
 
 @client_tg.on(events.NewMessage(chats=-1002143151446))
 async def normal_handler_1(event):
+    """vip crypto galaxy 1002143151446"""
     txt = str(event.message.to_dict()['message']).replace('- Binance Killers®', '').replace(
         'This message cannot be forwarded or replicated', '')
-    # message = event.message
-
-    await client_tg.send_message(
-        entity=destination_chat,
-        message=txt
-    )
+    message = event.message
+    if parse_trading_signal(message) or is_valid_trading_summary(message):
+        await client_tg.send_message(
+            entity=destination_chat,
+            message=txt
+        )
     print('Forwarded text message')
 
 

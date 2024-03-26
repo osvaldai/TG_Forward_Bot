@@ -4,7 +4,7 @@ import re
 from telethon import TelegramClient, events
 
 from trade_info_extractor import parse_trade_message, is_trade_message, parse_trade_message_49, \
-    is_valid_trade_message_49, parse_trading_signal, is_valid_trading_summary
+    is_valid_trade_message_49, parse_trading_signal, is_valid_trading_summary, parse_trade_message_final
 
 api_id = 1137549
 api_hash = '6a3dc4e051465fc0266835b6f4dd6777'
@@ -128,6 +128,20 @@ async def normal_handler_1(event):
         'This message cannot be forwarded or replicated', '')
     message = event.message
     if parse_trading_signal(message) or is_valid_trading_summary(message):
+        await client_tg.send_message(
+            entity=destination_chat,
+            message=txt
+        )
+    print('Forwarded text message')
+
+
+@client_tg.on(events.NewMessage(chats=-1001744711450))
+async def normal_handler_1(event):
+    """vip crypto galaxy 1002143151446"""
+    txt = str(event.message.to_dict()['message']).replace('- Binance Killers®', '').replace(
+        'This message cannot be forwarded or replicated', '')
+    message = event.message
+    if parse_trade_message_final(message)['validity']:
         await client_tg.send_message(
             entity=destination_chat,
             message=txt

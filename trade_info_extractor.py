@@ -140,3 +140,78 @@ def is_valid_trading_summary(message):
     else:
         return False
 
+
+def parse_trade_message_1(message: str) -> dict:
+    # Regular expression patterns
+    pair_pattern = r"TRADE -\s*([A-Za-z/]+)\s*\( Futures \)"
+    direction_pattern = r"Type -\s*(Long|Short)"
+    entry_pattern = r"Buy Zone -\s*(\d+\.?\d*)\$\s*to\s*(\d+\.?\d*)\$"
+    targets_pattern = r"🎯Target((?:\n\d+\.\s*\d+\.\d+\$)+)"
+    stop_loss_pattern = r"🛑Stop loss\s*(\d+\.?\d*)\$"
+
+    # Parsing
+    result = {
+        "validity": "False",
+        "trading_pair": None,
+        "trade_direction": None,
+        "entry_point": [],
+        "take_profits": [],
+        "stop_loss": None
+    }
+
+    # Check if the message is a valid trade message
+    if "TRADE -" in message and "🎯Target" in message:
+        result["validity"] = "True"
+        pair_match = re.search(pair_pattern, message)
+        direction_match = re.search(direction_pattern, message)
+        entry_match = re.search(entry_pattern, message)
+        targets_match = re.search(targets_pattern, message)
+        stop_loss_match = re.search(stop_loss_pattern, message)
+
+        if pair_match:
+            result["trading_pair"] = pair_match.group(1)
+        if direction_match:
+            result["trade_direction"] = direction_match.group(1)
+        if entry_match:
+            result["entry_point"] = [float(entry_match.group(1)), float(entry_match.group(2))]
+        if targets_match:
+            result["take_profits"] = [float(tp) for tp in re.findall(r"\d+\.\d+", targets_match.group(1))]
+        if stop_loss_match:
+            result["stop_loss"] = float(stop_loss_match.group(1))
+
+    return result
+
+
+def parse_trade_message_updated(message: str) -> dict:
+    # Updated regular expression patterns
+    pair_pattern = r"TRADE -\s*([A-Za-z/]+\s*/\s*[A-Za-z]+)\s*\( Futures \)"
+    targets_pattern = r"🎯Target(?:\n\d+\.\s*(\d+\.\d+)\$)+"
+
+    # Re-parsing with updated patterns
+    result = parse_trade_message_1(message)
+
+    # Update the pattern matching
+    pair_match = re.search(pair_pattern, message)
+    targets_match = re.findall(targets_pattern, message)
+
+    if pair_match:
+        result["trading_pair"] = pair_match.group(1).replace(" ", "")
+    if targets_match:
+        result["take_profits"] = targets_match
+
+    return result
+
+
+def parse_trade_message_final(message: str) -> dict:
+    # Final regular expression pattern adjustment for take profits
+    targets_pattern = r"\d+\.\s*(\d+\.\d+)\$"
+
+    # Re-parsing with final patterns
+    result = parse_trade_message_updated(message)
+
+    # Update the pattern matching for take profits
+    targets_match = re.findall(targets_pattern, message)
+    if targets_match:
+        result["take_profits"] = targets_match
+
+    return result

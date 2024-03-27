@@ -13,7 +13,7 @@ def parse_trade_message(message):
     info = {}
 
     # Extracting trade side (Long or Short)
-    trade_side_match = re.search(r'(LONG|SHORT)', message, re.IGNORECASE)
+    trade_side_match = re.search(r'(LONG|SHORT)', message)
     info['trade_side'] = trade_side_match.group(0).upper() if trade_side_match else None
 
     # Extracting trading pair

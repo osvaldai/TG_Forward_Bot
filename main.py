@@ -4,7 +4,8 @@ import re
 from telethon import TelegramClient, events
 
 from trade_info_extractor import parse_trade_message, is_trade_message, parse_trade_message_49, \
-    is_valid_trade_message_49, parse_trading_signal, is_valid_trading_summary, parse_trade_message_final
+    is_valid_trade_message_49, parse_trading_signal, is_valid_trading_summary, parse_trade_message_final, \
+    is_trading_signal, clean_message
 
 api_id = 1137549
 api_hash = '6a3dc4e051465fc0266835b6f4dd6777'
@@ -176,6 +177,16 @@ async def normal_handler_1(event):
         )
         print('Forwarded text message')
 
+
+@client_tg.on(events.NewMessage(chats=-1002040406233))
+async def normal_handler_1(event):
+    txt = str(event.message.to_dict()['message'])
+    is_signal = is_trading_signal(txt)
+    if is_signal:
+        await client_tg.send_message(
+            entity=destination_chat,
+            message=clean_message(txt)
+        )
 
 client_tg.start()
 client_tg.run_until_disconnected()

@@ -1,6 +1,45 @@
 import re
 
 
+def clean_message(message: str) -> str:
+    # Define patterns to remove from the message
+    remove_patterns = [
+        r"Disclaimer: Carries High Risk",
+        r"Registration"
+    ]
+
+    # Remove specified lines
+    for pattern in remove_patterns:
+        message = re.sub(pattern, '', message, flags=re.MULTILINE).strip()
+
+    return message
+
+
+def is_trading_signal(message: str) -> bool:
+    # Clean the message
+    message = clean_message(message)
+
+    # Print the cleaned message for debugging
+    print("Cleaned Message:\n", message)
+
+    # Define simpler patterns to look for in the message
+    signal_patterns = [
+        r"#\w+/\w+",  # Symbol pattern e.g. #BEAM/USDT
+        r"Signal Type: \w+ \(\w+\)",  # Signal type pattern e.g. Signal Type: Regular (Long)
+        r"Entry Around:\s*\d+\.\d+",  # Entry price pattern e.g. Entry Around: 0.022663
+        r"Take-Profit Targets:",  # Take-Profit targets pattern
+        r"Stop Targets:",  # Stop targets pattern
+    ]
+
+    # Check if all patterns are present in the message
+    for pattern in signal_patterns:
+        if not re.search(pattern, message):
+            print(f"Pattern not found: {pattern}")
+            return False
+
+    return True
+
+
 def parse_trade_message(message):
     """Bitcoin premium Channel 1001736278884"""
     """

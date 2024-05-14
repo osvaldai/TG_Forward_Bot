@@ -1,5 +1,6 @@
 import os
 import re
+from time import sleep
 
 from telethon import TelegramClient, events
 
@@ -169,10 +170,20 @@ async def normal_handler_1(event):
             entity=destination_chat,
             message=txt
         )
+        sleep(1)
+        await client_tg.send_message(
+            entity=-1002083136914,
+            message=txt
+        )
         print('Forwarded text message')
     elif is_similar_to_signal_TP(txt):
         await client_tg.send_message(
             entity=destination_chat,
+            message=txt
+        )
+        sleep(1)
+        await client_tg.send_message(
+            entity=-1002083136914,
             message=txt
         )
         print('Forwarded text message')
@@ -187,6 +198,10 @@ async def normal_handler_1(event):
             entity=destination_chat,
             message=clean_message(txt)
         )
-
+        sleep(1)
+        await client_tg.send_message(
+            entity=-1002083136914,
+            message=clean_message(txt)
+        )
 client_tg.start()
 client_tg.run_until_disconnected()

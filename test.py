@@ -1,71 +1,42 @@
 import re
 
 
-def clean_message(message: str) -> str:
-    # Define patterns to remove from the message
-    remove_patterns = [
-        r"Disclaimer: Carries High Risk",
-        r"Registration"
-    ]
-
-    # Remove specified lines
-    for pattern in remove_patterns:
-        message = re.sub(pattern, '', message, flags=re.MULTILINE).strip()
-
-    return message
-
-
 def is_trading_signal(message: str) -> bool:
-    # Clean the message
-    message = clean_message(message)
+    # Define individual patterns
+    pair_pattern = re.search(r"#\w+/\w+", message)
+    signal_type_pattern = re.search(r"Signal Type:\s*(Regular|Scalp|Swing) \((Long|Short)\)", message)
+    entry_target_pattern = re.search(r"Entry Targets:\s*\d+\.\d+", message)
+    take_profit_pattern = re.search(r"Take-Profit Targets:\s*(\d+\) \d+\.\d+\s*)+", message)
+    # stop_targets_pattern = re.search(r"Stop Targets:\s*\d+%-\d+%", message)
 
-    # Print the cleaned message for debugging
-    print("Cleaned Message:\n", message)
+    # Check if all patterns are found in the message
+    if (pair_pattern and signal_type_pattern and entry_target_pattern and
+            take_profit_pattern):
+        return True
 
-    # Define simpler patterns to look for in the message
-    signal_patterns = [
-        r"#\w+/\w+",  # Symbol pattern e.g. #BEAM/USDT
-        r"Signal Type: \w+ \(\w+\)",  # Signal type pattern e.g. Signal Type: Regular (Long)
-        r"Entry Around:\s*\d+\.\d+",  # Entry price pattern e.g. Entry Around: 0.022663
-        r"Take-Profit Targets:",  # Take-Profit targets pattern
-        r"Stop Targets:",  # Stop targets pattern
-    ]
-
-    # Check if all patterns are present in the message
-    for pattern in signal_patterns:
-        if not re.search(pattern, message):
-            print(f"Pattern not found: {pattern}")
-            return False
-
-    return True
+    return False
 
 
 # Example usage
-message = """Coin: $SXP/USDT
+message = """⚡️⚡️ #ARPA/USDT ⚡️⚡️
+Exchanges: Bingx 👉
 
-Direction: LONG
-Leverage: 20x (Cross)
------------------------------------
+Signal Type: Regular (Long)
+Leverage: Cross (20х)
 
-ENTRY:
-1) 0,415
-2) 0,39425
-3) 0,3735
-4) 0,35275
-•
-TAKE-PROFIT:
-1) 0,425375
-2) 0,43575
-3) 0,446125
-4) 0,4565
-5) 0,47725
-6) 0,498
-7) 0,51875
-8) 0,5395
-9) 0,581
-10) 0,6225
-•
-⛔ STOP-LOSS: 0,31125"""
+Entry Targets:
+0.07795
 
-is_signal = is_trading_signal(message)
-print(is_signal)  # Should print: True
+Take-Profit Targets:
+1) 0.07912
+2) 0.07990
+3) 0.08068
+4) 0.08185
+5) 0.08263
+6) 0.08380
+7) 🚀🚀🚀
+
+Stop Targets:
+5-10%"""
+
+print(is_trading_signal(message))  # Output: True

@@ -22,22 +22,19 @@ def is_trading_signal(message: str) -> bool:
     # Print the cleaned message for debugging
     print("Cleaned Message:\n", message)
 
-    # Define simpler patterns to look for in the message
-    signal_patterns = [
-        r"#\w+/\w+",  # Symbol pattern e.g. #BEAM/USDT
-        r"Signal Type: \w+ \(\w+\)",  # Signal type pattern e.g. Signal Type: Regular (Long)
-        r"Entry Around:\s*\d+\.\d+",  # Entry price pattern e.g. Entry Around: 0.022663
-        r"Take-Profit Targets:",  # Take-Profit targets pattern
-        r"Stop Targets:",  # Stop targets pattern
-    ]
+    # Define individual patterns
+    pair_pattern = re.search(r"#\w+/\w+", message)
+    signal_type_pattern = re.search(r"Signal Type:\s*(Regular|Scalp|Swing) \((Long|Short)\)", message)
+    entry_target_pattern = re.search(r"Entry Targets:\s*\d+\.\d+", message)
+    take_profit_pattern = re.search(r"Take-Profit Targets:\s*(\d+\) \d+\.\d+\s*)+", message)
+    # stop_targets_pattern = re.search(r"Stop Targets:\s*\d+%-\d+%", message)
 
-    # Check if all patterns are present in the message
-    for pattern in signal_patterns:
-        if not re.search(pattern, message):
-            print(f"Pattern not found: {pattern}")
-            return False
+    # Check if all patterns are found in the message
+    if (pair_pattern and signal_type_pattern and entry_target_pattern and
+            take_profit_pattern):
+        return True
 
-    return True
+    return False
 
 
 def parse_trade_message(message):

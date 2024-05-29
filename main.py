@@ -203,5 +203,6 @@ async def normal_handler_1(event):
             entity=-1002083136914,
             message=clean_message(txt)
         )
+
 client_tg.start()
 client_tg.run_until_disconnected()

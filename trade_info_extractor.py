@@ -16,22 +16,15 @@ def clean_message(message: str) -> str:
 
 
 def is_trading_signal(message: str) -> bool:
-    # Clean the message
-    message = clean_message(message)
-
-    # Print the cleaned message for debugging
-    print("Cleaned Message:\n", message)
-
     # Define individual patterns
     pair_pattern = re.search(r"#\w+/\w+", message)
     signal_type_pattern = re.search(r"Signal Type:\s*(Regular|Scalp|Swing) \((Long|Short)\)", message)
-    entry_target_pattern = re.search(r"Entry Targets:\s*\d+\.\d+", message)
-    take_profit_pattern = re.search(r"Take-Profit Targets:\s*(\d+\) \d+\.\d+\s*)+", message)
-    # stop_targets_pattern = re.search(r"Stop Targets:\s*\d+%-\d+%", message)
+    entry_target_pattern = re.search(r"Entry Around:\s*\d+\.\d+", message)
+    take_profit_pattern = re.findall(r"\d+\)\s*\d+\.\d+", message)
 
     # Check if all patterns are found in the message
     if (pair_pattern and signal_type_pattern and entry_target_pattern and
-            take_profit_pattern):
+            len(take_profit_pattern) >= 1):
         return True
 
     return False

@@ -204,5 +204,28 @@ async def normal_handler_1(event):
             message=clean_message(txt)
         )
 
+
+source_chat_id = -1002166801513
+destination_chat_id = -1002218862932
+
+
+@client_tg.on(events.NewMessage(chats=source_chat_id))
+async def normal_handler_1(event):
+    message = event.message
+    txt = message.message
+
+    if message.media:
+        await client_tg.send_message(
+            entity=destination_chat_id,
+            message=txt,
+            file=message.media
+        )
+    else:
+        await client_tg.send_message(
+            entity=destination_chat_id,
+            message=txt
+        )
+
+
 client_tg.start()
 client_tg.run_until_disconnected()

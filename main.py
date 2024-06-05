@@ -206,7 +206,7 @@ async def normal_handler_1(event):
 
 
 source_chat_id = -1002166801513
-destination_chat_id = -1002218862932
+destination_chat_id = -1002210848924
 
 
 @client_tg.on(events.NewMessage(chats=source_chat_id))

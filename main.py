@@ -8,13 +8,13 @@ from trade_info_extractor import parse_trade_message, is_trade_message, parse_tr
     is_valid_trade_message_49, parse_trading_signal, is_valid_trading_summary, parse_trade_message_final, \
     is_trading_signal, clean_message
 
-api_id = 1137549
-api_hash = '6a3dc4e051465fc0266835b6f4dd6777'
+api_id = 
+api_hash = ''
 
 client_tg = TelegramClient('session_name_forward.session', api_id, api_hash)
 
-chat = -1001322515232  # Например, -1001322515232
-destination_chat = -1002057661201  # ID целевого чата, куда будет пересылаться сообщение
+chat = 0  # Например, -
+destination_chat = 0  # ID целевого чата, куда будет пересылаться сообщение
 
 
 def extract_trading_info(message):
@@ -123,9 +123,9 @@ async def normal_handler_1(event):
         print('Forwarded text message')
 
 
-@client_tg.on(events.NewMessage(chats=-1002143151446))
+@client_tg.on(events.NewMessage(chats=0))
 async def normal_handler_1(event):
-    """vip crypto galaxy 1002143151446"""
+    """"""
     txt = str(event.message.to_dict()['message']).replace('- Binance Killers®', '').replace(
         'This message cannot be forwarded or replicated', '')
     message = event.message
@@ -137,9 +137,9 @@ async def normal_handler_1(event):
     print('Forwarded text message')
 
 
-@client_tg.on(events.NewMessage(chats=-1001744711450))
+@client_tg.on(events.NewMessage(chats=0))
 async def normal_handler_1(event):
-    """vip crypto galaxy 1002143151446"""
+    """"""
     txt = str(event.message.to_dict()['message']).replace('- Binance Killers®', '').replace(
         'This message cannot be forwarded or replicated', '')
     message = event.message
@@ -172,7 +172,7 @@ async def normal_handler_1(event):
         )
         sleep(1)
         await client_tg.send_message(
-            entity=-1002083136914,
+            entity=0,
             message=txt
         )
         print('Forwarded text message')
@@ -183,13 +183,13 @@ async def normal_handler_1(event):
         )
         sleep(1)
         await client_tg.send_message(
-            entity=-1002083136914,
+            entity=0,
             message=txt
         )
         print('Forwarded text message')
 
 
-@client_tg.on(events.NewMessage(chats=-1002040406233))
+@client_tg.on(events.NewMessage(chats=0))
 async def normal_handler_1(event):
     txt = str(event.message.to_dict()['message'])
     is_signal = is_trading_signal(txt)
@@ -200,13 +200,13 @@ async def normal_handler_1(event):
         )
         sleep(1)
         await client_tg.send_message(
-            entity=-1002083136914,
+            entity=0,
             message=clean_message(txt)
         )
 
 
-source_chat_id = -1002166801513
-destination_chat_id = -1002210848924
+source_chat_id = 0
+destination_chat_id = 0
 
 
 @client_tg.on(events.NewMessage(chats=source_chat_id))

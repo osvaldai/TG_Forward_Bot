@@ -31,7 +31,7 @@ def is_trading_signal(message: str) -> bool:
 
 
 def parse_trade_message(message):
-    """Bitcoin premium Channel 1001736278884"""
+    """Bitcoin premium Channel """
     """
     Parses the trade message and extracts information such as trade side, trading pair,
     entry points, take profits, stop loss, leverage, and funds.
@@ -72,7 +72,7 @@ def parse_trade_message(message):
 
 
 def is_trade_message(text):
-    """Bitcoin premium Channel 1001736278884"""
+    """Bitcoin premium Channel """
     """
     Checks if the provided text contains a trade message, focusing on a broad range of trading terms.
 
@@ -85,7 +85,7 @@ def is_trade_message(text):
 
 
 def parse_trade_message_49(message):
-    """rus fed premium channel 1001525644349"""
+    """rus fed premium channel """
     # Regular expressions for each piece of data
     id_pattern = r"VIP Trade ID: #(\w+)"
     pair_pattern = r"Pair: \$(\w+/\w+)"
@@ -117,7 +117,7 @@ def parse_trade_message_49(message):
 
 
 def is_valid_trade_message_49(message):
-    """rus fed premium channel 1001525644349"""
+    """rus fed premium channel """
     # Simple string checks for trading pair, targets, and profit
     has_pair = "Pair: $" in message
     has_targets = "Target" in message
@@ -128,7 +128,7 @@ def is_valid_trade_message_49(message):
 
 
 def parse_trading_signal(message):
-    """vip crypto galaxy 1002143151446"""
+    """vip crypto galaxy """
     # Check if it's a trading signal
     if not ("Coin:" in message and "Direction:" in message):
         return None
@@ -153,7 +153,7 @@ def parse_trading_signal(message):
 
 
 def is_valid_trading_summary(message):
-    """vip crypto galaxy 1002143151446"""
+    """vip crypto galaxy """
     # Regular expression patterns for each component
     platform_pattern = r'(Binance Futures|ByBit USDT|KuCoin Futures|OKX Futures)'
     trading_pair_pattern = r'#\w+/USDT'
